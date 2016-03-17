@@ -1,0 +1,49 @@
+
+Prénom et Nom :
+Numéro de dossier (NI):
+Temps de réalisation :
+
+
+Fonctionnalités
+---------------
+
+/2 : Le programme initialise correctement le tableau de mines.
+      Commentaires :
+
+/1 : Le programme affiche le tableau selon l'état de dévoilement des cases
+      Commentaires :
+
+/2 : Le programme valide les coordonnées
+      Commentaires :
+
+/1 : Le programme implémente l'effet de dévoilement en cascade (de base)
+      Commentaires :
+
+/1 : Le programme permet un bon déroulement de la partie
+      Commentaires :
+
+/1 : La partie se termine si le joueur déclenche une mine
+      Commentaires :
+
+/1 : La partie se termine si le joueur a dévoilé toutes les cases sans mine
+      Commentaires :
+
+/1 : La solution s'affiche à la fin de la partie
+      Commentaires :
+
+/2 : Qualité du code (noms de variables, style, commentaires, documentation)
+      Commentaires :
+
+
+
+Pénalités pour non-respect des consignes
+----------------------------------------
+
+
+
+Autres commentaires du correcteur
+---------------------------------
+
+
+
+Total: /12
