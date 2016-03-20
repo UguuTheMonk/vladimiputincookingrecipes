@@ -44,8 +44,9 @@ class Tableau:
         c = 0
         while r != self.dimension_rangee:
             while c != self.dimension_colonne:
-                self.dictionnaire_cases[c, r] = 0
+                self.dictionnaire_cases[c, r] = Case()
                 c += 1
+            c = 0
             r += 1
 
         mines_placees = 0
@@ -55,10 +56,10 @@ class Tableau:
             if (c, r) in self.liste_cases_minees:
                 continue
             else:
-                self.liste_cases_minees += c, r
-                cases_voisines = self.obtenir_voisins(c, r)
+                self.liste_cases_minees += (c, r)
+                cases_voisines = enumerate(self.obtenir_voisins(c, r))
                 for cases_voisines in self.dictionnaire_cases:
-                    self.dictionnaire_cases[cases_voisines] += 1
+                    self.dictionnaire_cases[cases_voisines] = Case.ajouter_une_mine_voisine(cases_voisines) # Erreur ici
                 mines_placees += 1
             """
         Initialise le tableau à son contenu initial en suivant les étapes suivantes:
@@ -111,14 +112,11 @@ class Tableau:
             bool: True si les coordonnées (x, y) sont valides, False autrement
         """
 
-        if rangee_x not in (1, self.dimension_colonne):
-                return False
-        elif colonne_y not in (1, self.dimension_rangee):
-            return False
-        else:
-            return True
+        return rangee_x in (1, self.dimension_colonne) and colonne_y in (1, self.dimension_rangee)
 
     def valider_coordonnees_a_devoiler(self, rangee_x, colonne_y):
+        return rangee_x in (1, self.dimension_colonne) and colonne_y in (1, self.dimension_rangee) and Case.est_a_devoiler == True
+
         """
         Valide que les coordonnées reçues en argument sont celles d'une case que l'on peut dévoiler (donc qui n'a pas
         encore été dévoilée.
@@ -130,8 +128,6 @@ class Tableau:
             False autrement (donc si elle a déjà été dévoilée).
         """
         # TODO: À compléter
-
-        return True
 
     def afficher_solution(self):
         """

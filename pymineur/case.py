@@ -28,16 +28,10 @@ class Case:
         # TODO: À compléter
 
     def contient_mine(self):
-        if self.est_minee == True:
-            return True
-        else:
-            return False
+        return self.est_minee
 
     def est_a_devoiler(self):
-        if self.est_devoilee == False:
-            return True
-        else:
-            return False
+       return not(self.est_devoilee)
 
     def ajouter_une_mine_voisine(self):
         self.nombre_mines_voisines += 1
