@@ -2,7 +2,7 @@
 Module contenant la description de la classe Tableau. Un tableau est utilisé pour jouer une partie du jeu Démineur.
 """
 
-from pymineur.case import Case
+from case import Case
 import random
 
 
@@ -35,11 +35,32 @@ class Tableau:
 
         # Le dictionnaire de case, vide au départ, qui est rempli par la fonction initialiser_tableau().
         self.dictionnaire_cases = {}
+        self.liste_cases_minees = []
 
         self.initialiser_tableau()
 
     def initialiser_tableau(self):
-        """
+        r = 0
+        c = 0
+        while r != self.dimension_rangee:
+            while c != self.dimension_colonne:
+                self.dictionnaire_cases[c, r] = 0
+                c += 1
+            r += 1
+
+        mines_placees = 0
+        while mines_placees != self.nombre_mines:
+            r = random.randint(1, self.dimension_rangee)
+            c = random.randint(1, self.dimension_colonne)
+            if (c, r) in self.liste_cases_minees:
+                continue
+            else:
+                self.liste_cases_minees += c, r
+                cases_voisines = self.obtenir_voisins(c, r)
+                for cases_voisines in self.dictionnaire_cases:
+                    self.dictionnaire_cases[cases_voisines] += 1
+                mines_placees += 1
+            """
         Initialise le tableau à son contenu initial en suivant les étapes suivantes:
             1) On crée chacune des cases du tableau.
             2) On y ajoute ensuite les mines dans certaines cases qui sont choisies au hasard.
@@ -63,11 +84,17 @@ class Tableau:
             list : Liste des coordonnées (tuple x, y) valides des cases voisines de la case dont les coordonnées
             sont reçues en argument
         """
-        VOISINAGE = ((-1, -1), (-1, 0), (-1, 1),
-                     (0, -1),           (0, 1),
-                     (1, -1),  (1, 0),  (1, 1))
+        VOISINAGE = ((rangee_x - 1, colonne_y - 1), (rangee_x -1, colonne_y), (rangee_x - 1, colonne_y + 1),
+                     (rangee_x, colonne_y - 1),           (rangee_x, colonne_y + 1),
+                     (rangee_x + 1, colonne_y - 1),  (rangee_x + 1, colonne_y),  (rangee_x + 1, colonne_y + 1))
 
-        liste_coordonnees_cases_voisines = []
+        liste_coordonnees_cases_voisines = list(VOISINAGE)
+        for c, (x, y) in enumerate(liste_coordonnees_cases_voisines):
+            est_valide = self.valider_coordonnees(x, y)
+            if est_valide == False:
+                del liste_coordonnees_cases_voisines[c]
+            else:
+                pass
 
         # TODO: Générer la liste des coordonnées valides des cases voisine. Le tuple VOISINAGE est là pour vous aider.
 
@@ -84,9 +111,12 @@ class Tableau:
             bool: True si les coordonnées (x, y) sont valides, False autrement
         """
 
-        # TODO: À compléter
-
-        return True
+        if rangee_x not in (1, self.dimension_colonne):
+                return False
+        elif colonne_y not in (1, self.dimension_rangee):
+            return False
+        else:
+            return True
 
     def valider_coordonnees_a_devoiler(self, rangee_x, colonne_y):
         """

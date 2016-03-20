@@ -20,44 +20,34 @@ class Case:
         self.nombre_mines_voisines = 0
 
     def devoiler(self):
-        """
-        Cette méthode modifie le statut de la case lorsque son contenu est dévoilé.
-        """
+        self.est_devoile = True
         # TODO: À compléter
 
     def ajouter_mine(self):
-        """
-        Cette méthode permet d'ajouter une mine à la case en modifiant un attibut.
-        """
+        self.est_minee = True
         # TODO: À compléter
 
     def contient_mine(self):
-        """
-        Méthode qui retourne si la case est minée ou non.
-
-        Returns:
-            bool: True si la case est minée, False autrement.
-        """
-        # TODO: À compléter
-        return False
+        if self.est_minee == True:
+            return True
+        else:
+            return False
 
     def est_a_devoiler(self):
-        """
-        Retourne si la case peut être dévoilée.
-
-        Returns:
-            bool: True si la case n'a pas encore été dévoilée, False autrement
-        """
-        # TODO: À compléter
-        return True
+        if self.est_devoilee == False:
+            return True
+        else:
+            return False
 
     def ajouter_une_mine_voisine(self):
+        self.nombre_mines_voisines += 1
         """
         Méthode qui incrémente l'attribut nombre_mines_voisines
         """
         # TODO: À compléter
 
     def obtenir_nombre_mines_voisines(self):
+
         """
         Méthode qui retourne le nombre de mines voisines de cette case.
         Returns:
@@ -67,10 +57,7 @@ class Case:
         return 0
 
     def est_voisine_d_une_mine(self):
-        """
-        Méthode qui indique si la case est voisine d'une mine ou nom
-        Returns:
-            bool: True si la case est voisine d'une mine, False autrement.
-        """
-        # TODO: À compléter
-        return True
+        if self.nombre_mines_voisines == 0:
+            return False
+        else:
+            return True

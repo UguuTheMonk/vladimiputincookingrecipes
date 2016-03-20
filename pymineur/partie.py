@@ -4,7 +4,7 @@ Doit être démarré en appelant la méthode jouer(). Cette classe contient les 
 utilise un objet tableau_mines (une instance de la classe Tableau).
 """
 
-from pymineur.tableau import Tableau
+from tableau import Tableau
 
 
 class Partie:
