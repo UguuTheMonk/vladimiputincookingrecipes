@@ -59,7 +59,7 @@ class Tableau:
                 self.liste_cases_minees += (c, r)
                 cases_voisines = enumerate(self.obtenir_voisins(c, r))
                 for cases_voisines in self.dictionnaire_cases:
-                    self.dictionnaire_cases[cases_voisines] = Case.ajouter_une_mine_voisine(cases_voisines) # Erreur ici
+                    self.dictionnaire_cases[cases_voisines].ajouter_une_mine_voisine()
                 mines_placees += 1
             """
         Initialise le tableau à son contenu initial en suivant les étapes suivantes:
@@ -115,7 +115,8 @@ class Tableau:
         return rangee_x in (1, self.dimension_colonne) and colonne_y in (1, self.dimension_rangee)
 
     def valider_coordonnees_a_devoiler(self, rangee_x, colonne_y):
-        return rangee_x in (1, self.dimension_colonne) and colonne_y in (1, self.dimension_rangee) and Case.est_a_devoiler == True
+        return rangee_x in (1, self.dimension_colonne) and colonne_y in (1, self.dimension_rangee) and \
+               Case.est_a_devoiler == True
 
         """
         Valide que les coordonnées reçues en argument sont celles d'une case que l'on peut dévoiler (donc qui n'a pas
@@ -137,6 +138,21 @@ class Tableau:
         # TODO: À compléter
 
     def afficher_tableau(self):
+        tableau = []
+        for rangee in range(self.dimension_rangee + 1):
+            if rangee == 0:
+                print(" ", end=" ")
+            else:
+                print("{0:2d} ".format(rangee), end=" ")
+        for (colonne, rangee) in enumerate(self.dictionnaire_cases):
+            if colonne == 0:
+                print("{0:2d} ". format(colonne), end=" ")
+            elif not self.dictionnaire_cases[colonne, rangee].est_devoilee:
+                print(" {0} ".format("_"), end=" ")
+            else:
+                print(" {0} ".format(self.dictionnaire_cases[colonne, rangee].nombre_mines_voisines), end=" ")
+
+
         """
         Méthode qui affiche la tableau à l'écran. Le tableau montre le contenu des cases dévoilées (mine ou
         nombre de mines voisines) ou un espace vide (comme _) pour les cases non dévoilées.
