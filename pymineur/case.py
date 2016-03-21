@@ -21,11 +21,9 @@ class Case:
 
     def devoiler(self):
         self.est_devoile = True
-        # TODO: À compléter
 
     def ajouter_mine(self):
         self.est_minee = True
-        # TODO: À compléter
 
     def contient_mine(self):
         return self.est_minee

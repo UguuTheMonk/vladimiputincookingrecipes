@@ -139,18 +139,34 @@ class Tableau:
 
     def afficher_tableau(self):
         tableau = []
-        for rangee in range(self.dimension_rangee + 1):
-            if rangee == 0:
-                print(" ", end=" ")
-            else:
-                print("{0:2d} ".format(rangee), end=" ")
-        for (colonne, rangee) in enumerate(self.dictionnaire_cases):
+        for colonne in range(self.dimension_colonne + 1):
             if colonne == 0:
-                print("{0:2d} ". format(colonne), end=" ")
-            elif not self.dictionnaire_cases[colonne, rangee].est_devoilee:
-                print(" {0} ".format("_"), end=" ")
+                for rangee in range(self.dimension_rangee + 1):
+                    if rangee == 0:
+                        print("  ", end=" ")
+                    else:
+                        print("{0:2d} ".format(rangee), end="")
+                print("\n")
             else:
-                print(" {0} ".format(self.dictionnaire_cases[colonne, rangee].nombre_mines_voisines), end=" ")
+                for rangee in range(self.dimension_rangee + 1):
+                    if rangee == 0:
+                        print("{0:2d} ".format(colonne), end=" ")
+                    else:
+                        if self.dictionnaire_cases[(rangee - 1, colonne - 1)].est_a_devoiler():
+                            print("_ ", end= " ")
+                        else :
+                            print(self.dictionnaire_cases[(rangee - 1, colonne - 1)].obtenir_nombre_mines_voisines(), \
+                                                         end=" ")
+
+                print("\n")
+
+        #for (colonne, rangee) in self.dictionnaire_cases:
+            #if colonne == 0:
+            #    print("{0:2d} ". format(colonne), end=" ")
+            #elif not self.dictionnaire_cases[colonne, rangee].est_devoilee():
+            #    print(" {0} ".format("_"), end=" ")
+            #else:
+            #    print(" {0} ".format(self.dictionnaire_cases[colonne, rangee].nombre_mines_voisines), end=" ")
 
 
         """
