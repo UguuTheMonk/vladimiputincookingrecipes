@@ -27,11 +27,11 @@ class Tableau:
 
     def __init__(self):
 
-        self.dimension_rangee = 5
-        self.dimension_colonne = 5
+        self.dimension_y = 5
+        self.dimension_x = 5
         self.nombre_mines = 5
 
-        self.nombre_cases_sans_mine_a_devoiler = self.dimension_rangee * self.dimension_colonne - self.nombre_mines
+        self.nombre_cases_sans_mine_a_devoiler = self.dimension_y * self.dimension_x - self.nombre_mines
 
         # Le dictionnaire de case, vide au départ, qui est rempli par la fonction initialiser_tableau().
         self.dictionnaire_cases = {}
@@ -40,24 +40,24 @@ class Tableau:
         self.initialiser_tableau()
 
     def initialiser_tableau(self):
-        r = 0
-        c = 0
-        while r != self.dimension_rangee:
-            while c != self.dimension_colonne:
-                self.dictionnaire_cases[c, r] = Case()
-                c += 1
-            c = 0
-            r += 1
+        y = 1
+        x = 1
+        while y in range(self.dimension_y + 1):
+            while x in range(self.dimension_x + 1):
+                self.dictionnaire_cases[x, y] = Case()
+                x += 1
+            x = 1
+            y += 1
 
         mines_placees = 0
         while mines_placees != self.nombre_mines:
-            r = random.randint(1, self.dimension_rangee)
-            c = random.randint(1, self.dimension_colonne)
-            if (c, r) in self.liste_cases_minees:
+            y = random.randint(1, self.dimension_y)
+            x = random.randint(1, self.dimension_x)
+            if (x, y) in self.liste_cases_minees:
                 continue
             else:
-                self.liste_cases_minees += (c, r)
-                cases_voisines = enumerate(self.obtenir_voisins(c, r))
+                self.liste_cases_minees += (x, y)
+                cases_voisines = enumerate(self.obtenir_voisins(x, y))
                 for cases_voisines in self.dictionnaire_cases:
                     self.dictionnaire_cases[cases_voisines].ajouter_une_mine_voisine()
                 mines_placees += 1
@@ -72,7 +72,7 @@ class Tableau:
         # Une bonne fonction du module random à utiliser dans cette méthode est randint(a,b) qui retourne un entier
         # aléatoire entre a et b inclusivement.
 
-    def obtenir_voisins(self, rangee_x, colonne_y):
+    def obtenir_voisins(self, coord_x, coord_y):
         """
         Retourne une liste de coordonnées correspondant aux cases voisines d'une case. Toutes les coordonnées retournées
         doivent être valides (c'est-à-dire se trouver à l'intérieur des dimensions du tableau).
@@ -85,14 +85,14 @@ class Tableau:
             list : Liste des coordonnées (tuple x, y) valides des cases voisines de la case dont les coordonnées
             sont reçues en argument
         """
-        VOISINAGE = ((rangee_x - 1, colonne_y - 1), (rangee_x -1, colonne_y), (rangee_x - 1, colonne_y + 1),
-                     (rangee_x, colonne_y - 1),           (rangee_x, colonne_y + 1),
-                     (rangee_x + 1, colonne_y - 1),  (rangee_x + 1, colonne_y),  (rangee_x + 1, colonne_y + 1))
+        VOISINAGE = ((coord_x - 1, coord_y - 1), (coord_x -1, coord_y), (coord_x - 1, coord_y + 1),
+                     (coord_x, coord_y - 1),           (coord_x, coord_y + 1),
+                     (coord_x + 1, coord_y - 1),  (coord_x + 1, coord_y),  (coord_x + 1, coord_y + 1))
 
         liste_coordonnees_cases_voisines = list(VOISINAGE)
         for c, (x, y) in enumerate(liste_coordonnees_cases_voisines):
             est_valide = self.valider_coordonnees(x, y)
-            if est_valide == False:
+            if not est_valide:
                 del liste_coordonnees_cases_voisines[c]
             else:
                 pass
@@ -101,7 +101,7 @@ class Tableau:
 
         return liste_coordonnees_cases_voisines
 
-    def valider_coordonnees(self, rangee_x, colonne_y):
+    def valider_coordonnees(self, coord_x, coord_y):
         """
         Valide les coordonnées reçues en argument. Les coordonnées sont considérées valides si elles se trouvent bien
         dans les dimensions du tableau.
@@ -112,50 +112,52 @@ class Tableau:
             bool: True si les coordonnées (x, y) sont valides, False autrement
         """
 
-        return rangee_x in (1, self.dimension_colonne) and colonne_y in (1, self.dimension_rangee)
+        return coord_x in (1, self.dimension_x) and coord_y in (1, self.dimension_y)
 
-    def valider_coordonnees_a_devoiler(self, rangee_x, colonne_y):
-        return rangee_x in (1, self.dimension_colonne) and colonne_y in (1, self.dimension_rangee) and \
+    def valider_coordonnees_a_devoiler(self, coord_x, coord_y):
+        return coord_x in (1, self.dimension_x) and coord_y in (1, self.dimension_y) and \
                Case.est_a_devoiler == True
 
-        """
-        Valide que les coordonnées reçues en argument sont celles d'une case que l'on peut dévoiler (donc qui n'a pas
-        encore été dévoilée.
-        Args:
-            rangee_x (int) : Numéro de la rangée de la case dont on veut valider les coordonnées
-            colonne_y (int): Numéro de la colonne de la case dont on veut valider les coordonnées
-        Returns
-            bool: True si la case à ces coordonnées (x, y) peut être dévoilée,
-            False autrement (donc si elle a déjà été dévoilée).
-        """
-        # TODO: À compléter
-
     def afficher_solution(self):
-        """
-        Méthode qui affiche la tableau solution à l'écran. La solution montre les mines pour les cases qui en contiennent
-        et la valeur du nombre de mines voisines pour les autres cases.
-        """
-        # TODO: À compléter
-
-    def afficher_tableau(self):
-        tableau = []
-        for colonne in range(self.dimension_colonne + 1):
-            if colonne == 0:
-                for rangee in range(self.dimension_rangee + 1):
-                    if rangee == 0:
+        for x in range(self.dimension_x + 1):
+            if x == 0:
+                for y in range(self.dimension_y + 1):
+                    if y == 0:
                         print("  ", end=" ")
                     else:
-                        print("{0:2d} ".format(rangee), end="")
+                        print("{0:2d} ".format(y), end="")
                 print("\n")
             else:
-                for rangee in range(self.dimension_rangee + 1):
-                    if rangee == 0:
-                        print("{0:2d} ".format(colonne), end=" ")
+                for y in range(self.dimension_y + 1):
+                    if y == 0:
+                        print("{0:2d} ".format(x), end=" ")
                     else:
-                        if self.dictionnaire_cases[(rangee - 1, colonne - 1)].est_a_devoiler():
+                        if self.dictionnaire_cases[(x, y)].contient_mine():
+                            print("X ", end= " ")
+                        else :
+                            print(self.dictionnaire_cases[(x, y)].obtenir_nombre_mines_voisines(),
+                                                         end=" ")
+
+                print("\n")
+
+    def afficher_tableau(self):
+        for x in range(self.dimension_x + 1):
+            if x == 0:
+                for y in range(self.dimension_y + 1):
+                    if y == 0:
+                        print("  ", end=" ")
+                    else:
+                        print("{0:2d} ".format(y), end="")
+                print("\n")
+            else:
+                for y in range(self.dimension_y + 1):
+                    if y == 0:
+                        print("{0:2d} ".format(x), end=" ")
+                    else:
+                        if self.dictionnaire_cases[(x, y)].est_a_devoiler():
                             print("_ ", end= " ")
                         else :
-                            print(self.dictionnaire_cases[(rangee - 1, colonne - 1)].obtenir_nombre_mines_voisines(), \
+                            print(self.dictionnaire_cases[(x, y)].obtenir_nombre_mines_voisines(),
                                                          end=" ")
 
                 print("\n")
@@ -176,6 +178,12 @@ class Tableau:
         # TODO: À compléter
 
     def contient_cases_a_devoiler(self):
+        if self.nombre_cases_sans_mine_a_devoiler == 0:
+            return False
+        else:
+            return True
+
+
         """
         Méthode qui indique si le tableau contient des cases à dévoiler
         Returns:
@@ -183,9 +191,9 @@ class Tableau:
 
         """
         # TODO: À compléter
-        return True
 
-    def devoiler_case(self, rangee_x, colonne_y):
+    def devoiler_case(self, coord_x, coord_y):
+        self.dictionnaire_cases[coord_x, coord_y].devoiler()
         """
         Méthode qui dévoile le contenu de la case dont les coordonnées sont reçues en argument. Si la case ne
         contient pas de mine, on décrémente l'attribut qui représente le nombre de cases sans mine à dévoiler. Aussi,
@@ -197,7 +205,11 @@ class Tableau:
         """
         # TODO: À compléter
 
-    def case_contient_mine(self, rangee_x, coordonnee_y):
+    def case_contient_mine(self, coord_x, coord_y):
+        if self.dictionnaire_cases[coord_x, coord_y].contient_mine():
+            return True
+        else:
+            return False
         """
         Méthode qui vérifie si la case dont les coordonnées sont reçues en argument contient une mine.
         Args:
@@ -207,9 +219,6 @@ class Tableau:
             bool: True si la case à ces coordonnées (x, y) contient une mine, False autrement.
 
         """
-        # TODO: À compléter
-
-        return False
 
 if __name__ == '__main__':
 

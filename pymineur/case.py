@@ -20,7 +20,7 @@ class Case:
         self.nombre_mines_voisines = 0
 
     def devoiler(self):
-        self.est_devoile = True
+        self.est_devoilee = True
 
     def ajouter_mine(self):
         self.est_minee = True

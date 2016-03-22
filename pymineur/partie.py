@@ -5,7 +5,7 @@ utilise un objet tableau_mines (une instance de la classe Tableau).
 """
 
 from tableau import Tableau
-
+import os
 
 class Partie:
     """
@@ -20,9 +20,45 @@ class Partie:
 
     def __init__(self):
         # Création d'une instance de la classe Tableau, qui sera manipulée par les méthodes de la classe.
+        print("""
+                 _______________.___.  _____  .___ _______  _______________ _____________.__.
+                 \______   \__  |   | /     \ |   |\      \ \_   _____/    |   \______   \  |
+                  |     ___//   |   |/  \ /  \|   |/   |   \ |    __)_|    |   /|       _/  |
+                  |    |    \____   |    Y    \   |    |    \|        \    |  / |    |   \  |
+                  |____|    / ______|____|__  /___|____|__  /_______  /______/  |____|_  /__|
+                            \/              \/            \/        \/                 \/ \/
+                                                                                    Par Samuel Parent
+                                                                                        Hugues Le Moyne
+
+                                            Bienvenue sur PyMineur!""")
+        input("""                                        Appuyez sur ENTRÉE pour débuter!""")
+        #os.system('cls')
         self.tableau_mines = Tableau()
+        self.partie_terminee = False
+        self.partie_gagnee = False
+
+    def victoire(self):
+        self.partie_gagnee = True
 
     def jouer(self):
+        tableau = Tableau()
+        tableau.afficher_tableau()
+        while not self.partie_terminee: # Va falloir remettre tout ça dans la prochaine méthode. dumbass
+            coord_x = input("Veuillez entrer le numéro de colonne de la case. \n")
+            coord_y = input("\nVeuillez entrer le numéro de rangée de la case.\n")
+            if coord_x.isdigit() and coord_y.isdigit():
+                coord = (int(coord_x), int(coord_y))
+                print(coord)
+                if coord in tableau.dictionnaire_cases.keys():
+                    if tableau.dictionnaire_cases[coord].est_a_devoiler():
+                        tableau.devoiler_case(int(coord_y), int(coord_x))
+                        tableau.afficher_tableau()
+                    else:
+                        print("Cette case est déjà dévoilée")
+                else:
+                    print("Ces coordonnées sont hors du champ de jeu.")
+            else :
+                print("Ces coordonnées sont invalides.")
         """
         Tant que la partie n'est pas terminée, on joue la partie. À chaque tour:
             - On affiche le tableau de cases
@@ -53,7 +89,7 @@ class Partie:
 
         return 1, 1
 
-    def valider_coordonnees(self, rangee_x, colonne_y):
+    def valider_coordonnees(self, coord_x, coord_y):
         """
         Méthode qui valide les coordonnées reçues en paramètres.
         Les coordonnées doivent 1) être des caractères numériques, 2) être à l'intérieur des valeurs possibles
