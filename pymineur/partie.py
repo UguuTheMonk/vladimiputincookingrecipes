@@ -44,8 +44,6 @@ class Partie:
         tableau = Tableau()
         tableau.afficher_tableau()
         while not self.partie_terminee: # Va falloir remettre tout ça dans la prochaine méthode. dumbass
-            coord_x = input("Veuillez entrer le numéro de colonne de la case. \n")
-            coord_y = input("\nVeuillez entrer le numéro de rangée de la case.\n")
             if coord_x.isdigit() and coord_y.isdigit():
                 coord = (int(coord_x), int(coord_y))
                 print(coord)
@@ -74,6 +72,11 @@ class Partie:
         # TODO: À compléter
 
     def demander_coordonnees_case_a_devoiler(self):
+        coord_x = input("Veuillez entrer le numéro de colonne de la case. \n")
+        coord_y = input("\nVeuillez entrer le numéro de rangée de la case.\n")
+        if coord_x.isdigit() and coord_y.isdigit():
+            coord = (int(coord_x), int(coord_y))
+            print(coord)
         """
         Méthode qui demande à l'utilisateur d'entrer la coordonnée de la case qu'il veut dévoiler.
         Cette coordonnée comporte un numéro de rangée et un numéro de colonne.
@@ -90,6 +93,12 @@ class Partie:
         return 1, 1
 
     def valider_coordonnees(self, coord_x, coord_y):
+        if coord_x.isdigit() and coord_y.isdigit():
+            coord = (int(coord_x), int(coord_y))
+            print(coord)
+            if coord in tableau.dictionnaire_cases.keys():
+                if tableau.dictionnaire_cases[coord].est_a_devoiler():
+                    return True
         """
         Méthode qui valide les coordonnées reçues en paramètres.
         Les coordonnées doivent 1) être des caractères numériques, 2) être à l'intérieur des valeurs possibles
