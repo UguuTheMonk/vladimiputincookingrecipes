@@ -4,19 +4,10 @@ Doit être démarré en appelant la méthode jouer(). Cette classe contient les 
 utilise un objet tableau_mines (une instance de la classe Tableau).
 """
 
-from tableau import Tableau
-import os
+from pymineur.tableau import Tableau
+#import os
 
 class Partie:
-    """
-    La classe Partie contient les informations sur une partie du jeu Démineur, qui se jouera avec
-    un tableau de mines. Des méthodes sont disponibles pour faire avancer la partie et interagir
-    avec l'utilisateur.
-
-    Attributes:
-        tableau_mines (Tableau): Le tableau de cases où les mines sont cachées avec lequel se
-                déroule la partie.
-    """
 
     def __init__(self):
         # Création d'une instance de la classe Tableau, qui sera manipulée par les méthodes de la classe.
@@ -41,22 +32,14 @@ class Partie:
         self.partie_gagnee = True
 
     def jouer(self):
-        tableau = Tableau()
+        tableau = self.tableau_mines
         tableau.afficher_tableau()
-        while not self.partie_terminee: # Va falloir remettre tout ça dans la prochaine méthode. dumbass
-            if coord_x.isdigit() and coord_y.isdigit():
-                coord = (int(coord_x), int(coord_y))
-                print(coord)
-                if coord in tableau.dictionnaire_cases.keys():
-                    if tableau.dictionnaire_cases[coord].est_a_devoiler():
-                        tableau.devoiler_case(int(coord_y), int(coord_x))
-                        tableau.afficher_tableau()
-                    else:
-                        print("Cette case est déjà dévoilée")
-                else:
-                    print("Ces coordonnées sont hors du champ de jeu.")
-            else :
-                print("Ces coordonnées sont invalides.")
+        while not self.partie_terminee:
+            coord = self.demander_coordonnees_case_a_devoiler()
+            print(coord)
+            tableau.devoiler_case(coord)
+            tableau.afficher_tableau()
+
         """
         Tant que la partie n'est pas terminée, on joue la partie. À chaque tour:
             - On affiche le tableau de cases
@@ -74,43 +57,25 @@ class Partie:
     def demander_coordonnees_case_a_devoiler(self):
         coord_x = input("Veuillez entrer le numéro de colonne de la case. \n")
         coord_y = input("\nVeuillez entrer le numéro de rangée de la case.\n")
-        if coord_x.isdigit() and coord_y.isdigit():
-            coord = (int(coord_x), int(coord_y))
-            print(coord)
-        """
-        Méthode qui demande à l'utilisateur d'entrer la coordonnée de la case qu'il veut dévoiler.
-        Cette coordonnée comporte un numéro de rangée et un numéro de colonne.
-        Tant que les coordonnées ne sont pas valides, on redemande de nouvelles coordonnées.
-        Une fois les coordonnées validées, on retourne les deux numéros sous forme d'entiers.
+        if self.valider_coordonnees(coord_x, coord_y):
+            coord = (coord_x, coord_y)
+            return coord
+        else:
+            self.demander_coordonnees_case_a_devoiler()
 
-        Returns:
-            int: Numéro de la rangée
-            int: Numéro de la colonne
-
-        """
-        # TODO: À compléter
-
-        return 1, 1
 
     def valider_coordonnees(self, coord_x, coord_y):
         if coord_x.isdigit() and coord_y.isdigit():
             coord = (int(coord_x), int(coord_y))
-            print(coord)
             if coord in tableau.dictionnaire_cases.keys():
                 if tableau.dictionnaire_cases[coord].est_a_devoiler():
                     return True
-        """
-        Méthode qui valide les coordonnées reçues en paramètres.
-        Les coordonnées doivent 1) être des caractères numériques, 2) être à l'intérieur des valeurs possibles
-        des rangées et des colonnes du tableau et 3) correspondre à une case qui n'a pas encore été dévoilée.
-
-        Args:
-            rangee_x (int):     Numéro de la rangée
-            colonne_y (int):    Numéro de la colonne
-
-        Returns:
-            bool : True si les coordonnées sont valides, False autrement.
-        """
-        # TODO: À compléter.
-        # Suggestion: Cette méthode pourrait appeler trois autres méthodes qui se séparent les trois types de
-        # validation nécessaires. À vous de définir leur interface.
+                else:
+                    print("Cette case est déjà dévoilée.")
+                    return False
+            else:
+                print("Ces coordonnées sont hors du champ de jeu.")
+                return False
+        else:
+            print("Ce coordonnées sont invalides.")
+            return False

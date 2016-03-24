@@ -2,7 +2,7 @@
 Module contenant la description de la classe Tableau. Un tableau est utilisé pour jouer une partie du jeu Démineur.
 """
 
-from case import Case
+from pymineur.case import Case
 import random
 
 
@@ -192,8 +192,8 @@ class Tableau:
         """
         # TODO: À compléter
 
-    def devoiler_case(self, coord_x, coord_y):
-        self.dictionnaire_cases[coord_x, coord_y].devoiler()
+    def devoiler_case(self, coord):
+        self.dictionnaire_cases[coord].devoiler()
         """
         Méthode qui dévoile le contenu de la case dont les coordonnées sont reçues en argument. Si la case ne
         contient pas de mine, on décrémente l'attribut qui représente le nombre de cases sans mine à dévoiler. Aussi,
