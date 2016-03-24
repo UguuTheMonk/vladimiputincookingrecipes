@@ -1,14 +1,13 @@
-"""
-Module principal du package pymineur. C'est ce module que nous allons exécuter pour démarrer votre jeu.
-"""
 
 from pymineur.partie import Partie
 
+
 if __name__ == '__main__':
-    # Création d'une instance de Partie.
-    partie = Partie()
+    while True:
+        partie = Partie()
+        partie.jouer()
+        rejouer = input("Appuyez sur une touche pour refaire une partie, ou faites N pour quitter.")
+        rejouer = rejouer.lower()
+        if rejouer == "n":
+            break
 
-    # Démarrage de cette partie.
-    partie.jouer()
-
-    input("Appuyez sur ENTRÉE pour quitter.")
